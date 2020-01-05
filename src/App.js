@@ -3,7 +3,9 @@ import { Provider } from 'react-redux'
 import store from './store/index'
 import './index.css'
 import { HashRouter as Router, Switch, Route } from 'react-router-dom'
-
+import Login from './pages/login/index.jsx'
+import Template from './pages/template/index.jsx'
+import EditorPage from './pages/editor/index.jsx'
 /**
  * 顶级组件用来放置路由页面
  * @author 马羽
@@ -19,6 +21,9 @@ class App extends Component {
 			<Provider store={store}>
 				<Router>
 					<Switch>
+						<Route path="/" component={Login} exact></Route>
+						<Route path="/template" component={Template}></Route>
+						<Route path="/editor/:id" component={EditorPage} exact></Route>
 					</Switch>
 				</Router>
 			</Provider>
