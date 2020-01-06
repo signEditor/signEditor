@@ -9,12 +9,15 @@ class Editor extends Component {
     }
 
     render() {
-        let { initData, save, config } = this.props
+        let { initData, save, config, Export } = this.props
         let { editor } = this.state
+        let editorEl = this.editorEl
         return (
-            <div>
+            <div className="editorWrapper">
                 <div className="toolBar" ref={toolbar => this.toolbar=toolbar} ></div>
                 <CKEditor
+                    ref={editorEl => this.editorEl = editorEl}
+                    className="editor"
                     editor={ DecoupledEditor }
                     onInit = { async editor => {
                         await this.setState({
@@ -31,6 +34,7 @@ class Editor extends Component {
                             <Icon type="upload" /> 上传word
                         </Button>
                     </Upload>
+                    <Button onClick={e => Export(editorEl)} type="primary">导出</Button>
                 </div>
             </div>
         )
