@@ -1,5 +1,13 @@
 .editorWrapper {
+    position: relative;
+    min-height: 60px;
     padding: 30px 50px;
+    .loading {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
     .wordTitle {
         text-align: center;
         line-height: 50px;

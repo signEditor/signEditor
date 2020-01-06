@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getUserWordInfo, saveUserWordInfo } from '../../store/action'
+import { getUserWordInfo, saveUserWordInfo, upLoadWord } from '../../store/action'
 import Editor from '../../component/editor'
 import './index.scss'
-import { message } from 'antd'
+import { message, Spin } from 'antd'
 class EditorPage extends Component {
     state = {
         allowEditor: false,
@@ -34,12 +34,50 @@ class EditorPage extends Component {
     }
     render() {
         let { userWordContent, userWordTitle } = this.props
+        userWordTitle = userWordTitle.replace(/&nbsp;/gi, '')
+        let { status } = this.state
+        let that = this
+        const config = {
+            name: 'file',
+            action: '',
+            showUploadList: false,
+            beforeUpload(file) {
+                let name = file.name
+                if(/doc(x)$/.test(name)) return true
+                else {
+                    message.error('只支持上传word')
+                    return false
+                }
+            },
+            async customRequest(info) {
+                let { file } = info
+                let { upLoadWord } = that.props
+                let fd = new FormData()
+                fd.append('file', file)
+                let p = await upLoadWord(fd)
+                
+            },
+            onChange(info) {
+                
+            }
+        }
         return (
             <div className="editorWrapper">
-                <div className="wordTitle">{userWordTitle}</div>
-                <div>
-                    <Editor click={this.save} initData={userWordContent}></Editor>
-                </div>
+                {
+                    status === 'loading' ?
+                    <Spin className="loading" size="large" />
+                    :
+                    <>
+                        <div className="wordTitle">{userWordTitle}</div>
+                        <div>
+                            <Editor
+                                config={config} 
+                                save={this.save} 
+                                initData={userWordContent}
+                            ></Editor>
+                        </div>
+                    </>
+                }
             </div>
         )
     }
@@ -60,8 +98,15 @@ class EditorPage extends Component {
             title,
             content: data
         })
-        if(p === '0000') message.success('保存成功')
-        else message.success('保存失败')
+        if(p === '0000') {
+            let { history } = this.props
+            message.success('保存成功', 2, () => {
+                history.push({
+                    pathname: '/template'
+                })
+            })
+        }
+        else message.error('保存失败')
     }
 }
 
@@ -82,6 +127,10 @@ const mapDispatchToProps = dispatch => {
         },
         saveUserWordInfo(userWordInfo) {
             const action = saveUserWordInfo(userWordInfo)
+            return dispatch(action)
+        },
+        upLoadWord(FormData) {
+            const action = upLoadWord(FormData)
             return dispatch(action)
         }
     }

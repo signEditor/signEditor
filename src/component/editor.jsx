@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../lib/ckeditor'
 import CKEditor from '@ckeditor/ckeditor5-react';
-import { Button } from 'antd'
+import { Button, Upload, Icon } from 'antd'
 class Editor extends Component {
     state = {
         editor: null,
@@ -9,7 +9,7 @@ class Editor extends Component {
     }
 
     render() {
-        let { initData, click } = this.props
+        let { initData, save, config } = this.props
         let { editor } = this.state
         return (
             <div>
@@ -24,7 +24,14 @@ class Editor extends Component {
                     } }
                     data = {initData}
                 ></CKEditor>
-                <div><Button onClick={e => click(editor)} type="primary">保存</Button></div>
+                <div>
+                    <Button onClick={e => save(editor)} type="primary">保存</Button>
+                    <Upload {...config}>
+                        <Button>
+                            <Icon type="upload" /> 上传word
+                        </Button>
+                    </Upload>
+                </div>
             </div>
         )
     }

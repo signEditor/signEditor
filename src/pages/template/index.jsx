@@ -8,7 +8,7 @@ class Template extends Component {
     async componentDidMount() {
         let { userID, userName } = this.props
         //如果用户id不存在就弹出信息并回到首页
-        if(!userID && !sessionStorage.getItem('userID')) {
+        if(userID === '' && sessionStorage.getItem('userID') === '') {
             let { history } = this.props
             message.error('请确认是否登录', 2, () => {
                 history.push({
@@ -40,16 +40,22 @@ class Template extends Component {
             <div>
                 <List
                     header={<div>欢迎您: {userName}</div>}
-                    footer={<div style={{
-                        textAlign: 'center',
-                        fontSize: '20px'
-                    }}><Icon type="edit" theme="twoTone" /></div>}
+                    footer={
+                        <Link to={`/editor/${userWordTemplate.length}`}>
+                            <div style={{
+                                textAlign: 'center',
+                                fontSize: '20px'
+                            }}>
+                                <Icon type="edit" theme="twoTone" />
+                            </div>
+                        </Link>
+                    }
                     bordered
                     dataSource={userWordTemplate}
                     renderItem={item => (
-                        <Link to={`/editor/${item.id}`}>
-                            <List.Item className="wordTemplateItem" key={item.id}>
-                                {item.title}
+                        <Link to={`/editor/${item.id}`} key={item.id}>
+                            <List.Item className="wordTemplateItem">
+                                {item.title.replace(/&nbsp;/ig, '')}
                             </List.Item>
                         </Link>
                     )}

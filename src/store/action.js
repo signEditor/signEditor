@@ -13,7 +13,7 @@ import { setUserInfo, setUserWordTemplate, setUserWordInfo } from './dispatch'
  * }
  */
 
- const url = 'http://127.0.0.1:5000'
+ export const url = 'http://127.0.0.1:5000'
 
 
 //登录
@@ -112,5 +112,23 @@ export const saveUserWordInfo = info => {
         })
         let { code } = res.data
         return code
+    }
+}
+
+export const upLoadWord = FormData => {
+    return async dispatch => {
+        let res = await axios.post(url + '/upLoadWord', FormData)
+        let { data: { title, data: { value } } } = res
+        title = title.replace(/.doc(x)$/i, '')
+        value = `<h1>${title}</h1>${value}`
+        const action = setUserWordInfo({
+            userWordContent: value,
+            userWordTitle: title
+        })
+        dispatch(action)
+        return {
+            title,
+            value
+        }
     }
 }
