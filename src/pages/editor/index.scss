@@ -9,9 +9,20 @@
         transform: translate(-50%, -50%);
     }
     .wordTitle {
+        margin-top: 50px;
         text-align: center;
         line-height: 50px;
         font-size: 30px;
         font-weight: bolder;
     }
+    .editorWrapper {
+        .toolBar {
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            position: fixed;
+            top: 10px;
+        }
+    }
+    
 }

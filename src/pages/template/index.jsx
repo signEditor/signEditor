@@ -55,7 +55,7 @@ class Template extends Component {
                     renderItem={item => (
                         <Link to={`/editor/${item.id}`} key={item.id}>
                             <List.Item className="wordTemplateItem">
-                                {item.title.replace(/&nbsp;/ig, '')}
+                                {item.title.replace(/&nbsp;/ig, '') ? item.title.replace(/&nbsp;/ig, '') : '无标题'}
                             </List.Item>
                         </Link>
                     )}
